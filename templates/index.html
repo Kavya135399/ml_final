@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Breast Cancer Predictor</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #fde2e4, #e0c3fc);
+            color: #333;
+        }
+
+        /* NAVBAR */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 50px;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+        }
+
+        nav h1 {
+            color: #e91e63;
+        }
+
+        nav a {
+            margin-left: 20px;
+            text-decoration: none;
+            color: #555;
+            transition: 0.3s;
+        }
+
+        nav a:hover {
+            color: #e91e63;
+        }
+
+        /* HERO */
+        .hero {
+            text-align: center;
+            padding: 80px 20px;
+        }
+
+        .hero h2 {
+            font-size: 40px;
+            color: #e91e63;
+        }
+
+        .hero p {
+            margin-top: 10px;
+            color: #555;
+        }
+
+        .hero button {
+            margin-top: 20px;
+            padding: 12px 25px;
+            border: none;
+            background: #e91e63;
+            color: white;
+            border-radius: 25px;
+            cursor: pointer;
+        }
+
+        /* CARD CONTAINER */
+        .container {
+            background: white;
+            padding: 30px;
+            margin: 30px auto;
+            width: 80%;
+            border-radius: 15px;
+            box-shadow: 0px 10px 25px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #e91e63;
+        }
+
+        /* FORM GRID */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+        }
+
+        input {
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            transition: 0.3s;
+        }
+
+        input:focus {
+            border-color: #e91e63;
+            outline: none;
+            box-shadow: 0 0 5px #e91e63;
+        }
+
+        button {
+            padding: 12px;
+            background: #e91e63;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            margin-top: 15px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button:hover {
+            background: #c2185b;
+        }
+
+        /* RESULT */
+        .result {
+            text-align: center;
+            margin-top: 15px;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .benign {
+            color: green;
+        }
+
+        .malignant {
+            color: red;
+        }
+
+        /* FOOTER */
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+            background: white;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+        }
+
+    </style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+    <h1 class="logo">🎗 Breast Cancer Predictor</h1>
+
+    <div class="nav-links">
+        <a href="/" class="active">Home</a>
+        <a href="/about">About</a>
+        <!-- <a href="/#form-section">Prediction</a> -->
+        <a href="/contact">Contact</a>
+    </div>
+</nav>
+<!-- HERO -->
+<section class="hero">
+    <h2>Early Detection Saves Lives</h2>
+    <p>AI-powered breast cancer prediction for faster and reliable diagnosis.</p>
+    <button onclick="document.getElementById('form-section').scrollIntoView()">Get Prediction</button>
+</section>
+
+<!-- FORM -->
+<div id="form-section" class="container">
+    <h2>Prediction Form</h2>
+
+    <form action="/predict" method="post">
+        <div class="form-grid">
+            {% for i in range(30) %}
+                <input type="text" name="f{{i}}" placeholder="Feature {{i+1}}" required>
+            {% endfor %}
+        </div>
+        <button type="submit">Predict</button>
+    </form>
+
+    {% if prediction_text %}
+        <div class="result 
+            {% if 'Malignant' in prediction_text %}malignant{% else %}benign{% endif %}">
+            {{ prediction_text }}
+        </div>
+    {% endif %}
+</div>
+
+<!-- CSV UPLOAD -->
+<div class="container">
+    <h2>Upload CSV for Bulk Prediction</h2>
+
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" required>
+        <button type="submit">Upload & Predict</button>
+    </form>
+</div>
+
+<!-- FOOTER -->
+<footer>
+    <p>© 2026 Breast Cancer Predictor | Built with ❤️ using Machine Learning</p>
+</footer>
+
+</body>
+</html>

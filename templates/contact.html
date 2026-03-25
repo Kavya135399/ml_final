@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Contact - Breast Cancer Predictor</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #fde2e4, #e0c3fc);
+    color: #333;
+}
+
+/* NAVBAR */
+nav {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 50px;
+    background: white;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+nav h1 {
+    color: #e91e63;
+}
+
+nav a {
+    margin-left: 20px;
+    text-decoration: none;
+    color: #555;
+}
+
+nav a:hover {
+    color: #e91e63;
+}
+
+/* HERO */
+.hero {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.hero h2 {
+    font-size: 36px;
+    color: #e91e63;
+}
+
+.hero p {
+    margin-top: 10px;
+    color: #555;
+}
+
+/* CONTAINER */
+.container {
+    width: 80%;
+    margin: 20px auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+/* CARD */
+.card {
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0px 10px 20px rgba(0,0,0,0.1);
+}
+
+/* FORM */
+input, textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+input:focus, textarea:focus {
+    border-color: #e91e63;
+    outline: none;
+}
+
+button {
+    margin-top: 15px;
+    width: 100%;
+    padding: 12px;
+    background: #e91e63;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #c2185b;
+}
+
+/* INFO BOX */
+.info p {
+    margin: 10px 0;
+}
+
+/* FOOTER */
+footer {
+    text-align: center;
+    padding: 20px;
+    background: white;
+    margin-top: 40px;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+    <h1 class="logo">🎗 Breast Cancer Predictor</h1>
+
+    <div class="nav-links">
+        <a href="/" class="active">Home</a>
+        <a href="/about">About</a>
+        <!-- <a href="/prediction">Prediction</a> -->
+        <a href="/contact">Contact</a>
+    </div>
+</nav>
+<!-- HERO -->
+<section class="hero">
+    <h2>Contact Us</h2>
+    <p>We are here to help and answer any questions you may have</p>
+</section>
+
+<!-- MAIN SECTION -->
+<div class="container">
+
+    <!-- CONTACT FORM -->
+    <div class="card">
+        <h3>Send a Message</h3>
+
+        <form action="/contact" method="post">
+            <input type="text" name="name" placeholder="Your Name" required>
+            <input type="email" name="email" placeholder="Your Email" required>
+            <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
+
+            <button type="submit">Send Message</button>
+        </form>
+    </div>
+
+    <!-- CONTACT INFO -->
+    <div class="card info">
+        <h3>Contact Information</h3>
+
+        <p>📍 Ahmedabad, India</p>
+        <p>📧 support@breastpredictor.com</p>
+        <p>📞 +91 98765 43210</p>
+
+        <h4 style="margin-top:15px;">Working Hours</h4>
+        <p>Mon - Fri: 9 AM - 6 PM</p>
+        <p>Sat: 10 AM - 4 PM</p>
+    </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+    <p>© 2026 Breast Cancer Predictor | Built with ❤️</p>
+</footer>
+
+</body>
+</html>

@@ -1,178 +1,345 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Contact - Breast Cancer Predictor</title>
+    <meta charset="UTF-8">
+    <title>Contact - Breast Cancer Predictor</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #e91e63;
+            --primary-dark: #c2185b;
+            --secondary: #9c27b0;
+            --bg-gradient: linear-gradient(135deg, #fde2e4, #e0c3fc);
+            --white: #ffffff;
+            --text-dark: #333;
+            --text-light: #666;
+            --shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
 
-<style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
-}
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
 
-body {
-    background: linear-gradient(135deg, #fde2e4, #e0c3fc);
-    color: #333;
-}
+        body { background: var(--bg-gradient); color: var(--text-dark); }
 
-/* NAVBAR */
-nav {
-    display: flex;
-    justify-content: space-between;
-    padding: 15px 50px;
-    background: white;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-}
+        /* NAVBAR */
+        nav {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 50px; background: var(--white);
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 1000;
+        }
+        .logo { display: flex; align-items: center; gap: 10px; font-size: 1.5rem; font-weight: 700; color: var(--primary); text-decoration: none; }
+        .nav-links a { margin-left: 30px; text-decoration: none; color: var(--text-light); font-weight: 500; transition: 0.3s; }
+        .nav-links a:hover, .nav-links a.active { color: var(--primary); }
 
-nav h1 {
-    color: #e91e63;
-}
+        /* HERO */
+        .hero {
+            text-align: center; padding: 60px 20px 40px;
+        }
+        .hero h1 {
+            font-size: 2.8rem; background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 10px;
+        }
+        .hero p { color: var(--text-light); font-size: 1.1rem; max-width: 600px; margin: 0 auto; }
 
-nav a {
-    margin-left: 20px;
-    text-decoration: none;
-    color: #555;
-}
+        /* MAIN CONTAINER */
+        .container {
+            max-width: 1200px; margin: 0 auto; padding: 0 20px;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 40px;
+        }
+        
+        @media (max-width: 900px) {
+            .container { grid-template-columns: 1fr; }
+        }
 
-nav a:hover {
-    color: #e91e63;
-}
+        /* CARDS BASE */
+        .card {
+            background: var(--white); border-radius: 20px; padding: 30px;
+            box-shadow: var(--shadow); position: relative; overflow: hidden;
+            height: 100%;
+        }
+        .card::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 5px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+        }
+        .card h3 { font-size: 1.5rem; color: var(--text-dark); margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+        .card h3 i { color: var(--primary); }
 
-/* HERO */
-.hero {
-    text-align: center;
-    padding: 60px 20px;
-}
+        /* FORM STYLING */
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 500; color: var(--text-light); font-size: 0.9rem; }
+        
+        .input-box {
+            position: relative;
+        }
+        .input-box i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #ccc; transition: 0.3s; }
+        
+        input, textarea {
+            width: 100%; padding: 12px 15px 12px 45px; border: 2px solid #eee;
+            border-radius: 10px; font-size: 0.95rem; transition: 0.3s; background: #fafafa;
+        }
+        input:focus, textarea:focus {
+            border-color: var(--primary); background: white; box-shadow: 0 0 0 3px rgba(233,30,99,0.1); outline: none;
+        }
+        input:focus + i, textarea:focus + i { color: var(--primary); }
 
-.hero h2 {
-    font-size: 36px;
-    color: #e91e63;
-}
+        textarea { resize: none; height: 120px; }
+        textarea + i { top: 15px; transform: translateY(0); }
 
-.hero p {
-    margin-top: 10px;
-    color: #555;
-}
+        .btn-submit {
+            width: 100%; padding: 14px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: white; border: none; border-radius: 10px;
+            font-size: 1rem; font-weight: 600; cursor: pointer;
+            transition: 0.3s; display: flex; justify-content: center; align-items: center; gap: 10px;
+        }
+        .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(233,30,99,0.4); }
 
-/* CONTAINER */
-.container {
-    width: 80%;
-    margin: 20px auto;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
-}
+        /* CONTACT INFO LIST */
+        .info-list { list-style: none; }
+        .info-list li {
+            display: flex; align-items: flex-start; gap: 15px; margin-bottom: 20px; padding-bottom: 20px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .info-list li:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        .info-icon {
+            width: 50px; height: 50px; background: #fdf2f4; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center; color: var(--primary); font-size: 1.2rem; flex-shrink: 0;
+        }
+        .info-content h4 { font-size: 1.1rem; margin-bottom: 5px; color: var(--text-dark); }
+        .info-content p { color: var(--text-light); font-size: 0.95rem; line-height: 1.5; }
 
-/* CARD */
-.card {
-    background: white;
-    padding: 25px;
-    border-radius: 15px;
-    box-shadow: 0px 10px 20px rgba(0,0,0,0.1);
-}
+        /* DOCTORS SECTION */
+        .doctors-section {
+            max-width: 1200px; margin: 60px auto; padding: 0 20px;
+        }
+        .section-header {
+            text-align: center; margin-bottom: 40px;
+        }
+        .section-header h2 {
+            font-size: 2rem; color: var(--text-dark); margin-bottom: 10px;
+        }
+        .section-header p { color: var(--text-light); }
 
-/* FORM */
-input, textarea {
-    width: 100%;
-    padding: 10px;
-    margin-top: 10px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-}
+        .doctors-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px;
+        }
 
-input:focus, textarea:focus {
-    border-color: #e91e63;
-    outline: none;
-}
+        .doctor-card {
+            background: var(--white); border-radius: 20px; overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05); transition: 0.3s; border: 1px solid #eee;
+            text-align: center; position: relative;
+        }
+        .doctor-card:hover { transform: translateY(-10px); box-shadow: var(--shadow); }
+        
+        .doc-header {
+            background: linear-gradient(135deg, #fde2e4, #e0c3fc); padding: 40px 20px 60px;
+            position: relative;
+        }
+        
+        .doc-img {
+            width: 100px; height: 100px; border-radius: 50%; border: 4px solid var(--white);
+            object-fit: cover; position: absolute; bottom: -50px; left: 50%; transform: translateX(-50%);
+            background: #fff;
+            /* Using placeholder initials for demo */
+            display: flex; align-items: center; justify-content: center;
+            background: var(--primary); color: white; font-size: 2rem; font-weight: 600;
+        }
+        
+        .doc-body { padding: 60px 20px 20px; }
+        .doc-name { font-size: 1.2rem; font-weight: 600; color: var(--text-dark); }
+        .doc-spec { color: var(--primary); font-size: 0.9rem; margin-bottom: 15px; font-weight: 500; }
+        
+        .rating { color: #ffc107; margin-bottom: 15px; }
+        
+        .doc-contact-info {
+            background: #f9f9f9; padding: 15px; border-radius: 10px; text-align: left;
+            font-size: 0.85rem; color: var(--text-light); margin-bottom: 15px;
+        }
+        .doc-contact-info div { margin-bottom: 5px; display: flex; align-items: center; gap: 8px; }
+        .doc-contact-info i { width: 15px; color: var(--secondary); }
 
-button {
-    margin-top: 15px;
-    width: 100%;
-    padding: 12px;
-    background: #e91e63;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-}
+        .btn-book {
+            width: 100%; padding: 10px; border: 2px solid var(--primary); background: transparent;
+            color: var(--primary); border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.3s;
+        }
+        .btn-book:hover { background: var(--primary); color: white; }
 
-button:hover {
-    background: #c2185b;
-}
-
-/* INFO BOX */
-.info p {
-    margin: 10px 0;
-}
-
-/* FOOTER */
-footer {
-    text-align: center;
-    padding: 20px;
-    background: white;
-    margin-top: 40px;
-}
-
-</style>
+        /* FOOTER */
+        footer { background: var(--white); padding: 30px; text-align: center; margin-top: 60px; color: var(--text-light); border-top: 1px solid #eee; }
+    </style>
 </head>
 
 <body>
 
 <!-- NAVBAR -->
 <nav class="navbar">
-    <h1 class="logo">🎗 Breast Cancer Predictor</h1>
-
+    <a href="/" class="logo"><i class="fas fa-ribbon"></i> OncoDetect</a>
     <div class="nav-links">
-        <a href="/" class="active">Home</a>
-        <a href="/about">About</a>
-        <!-- <a href="/prediction">Prediction</a> -->
-        <a href="/contact">Contact</a>
+        <a href="/"><i class="fas fa-home"></i> Home</a>
+        <a href="/about"><i class="fas fa-info-circle"></i> About</a>
+        <!-- <a href="/predict"><i class="fas fa-search"></i> Predict</a> -->
+        <a href="/contact" class="active"><i class="fas fa-envelope"></i> Contact</a>
     </div>
 </nav>
+
 <!-- HERO -->
 <section class="hero">
-    <h2>Contact Us</h2>
-    <p>We are here to help and answer any questions you may have</p>
+    <h1>Contact & Support</h1>
+    <p>Need assistance or looking for expert advice? We are here to help.</p>
 </section>
 
-<!-- MAIN SECTION -->
+<!-- CONTACT FORM & INFO -->
 <div class="container">
-
-    <!-- CONTACT FORM -->
+    
+    <!-- FORM -->
     <div class="card">
-        <h3>Send a Message</h3>
-
+        <h3><i class="fas fa-paper-plane"></i> Send Message</h3>
         <form action="/contact" method="post">
-            <input type="text" name="name" placeholder="Your Name" required>
-            <input type="email" name="email" placeholder="Your Email" required>
-            <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
+            <div class="form-group">
+                <label>Your Name</label>
+                <div class="input-box">
+                    <input type="text" name="name" placeholder="John Doe" required>
+                    <i class="fas fa-user"></i>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Email Address</label>
+                <div class="input-box">
+                    <input type="email" name="email" placeholder="john@example.com" required>
+                    <i class="fas fa-envelope"></i>
+                </div>
+            </div>
 
-            <button type="submit">Send Message</button>
+            <div class="form-group">
+                <label>Your Message</label>
+                <div class="input-box">
+                    <textarea name="message" placeholder="How can we help?" required></textarea>
+                    <i class="fas fa-comment-alt"></i>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-submit">
+                <i class="fas fa-check"></i> Send Message
+            </button>
         </form>
     </div>
 
-    <!-- CONTACT INFO -->
-    <div class="card info">
-        <h3>Contact Information</h3>
-
-        <p>📍 Ahmedabad, India</p>
-        <p>📧 support@breastpredictor.com</p>
-        <p>📞 +91 98765 43210</p>
-
-        <h4 style="margin-top:15px;">Working Hours</h4>
-        <p>Mon - Fri: 9 AM - 6 PM</p>
-        <p>Sat: 10 AM - 4 PM</p>
+    <!-- GENERAL INFO -->
+    <div class="card">
+        <h3><i class="fas fa-headset"></i> General Support</h3>
+        <ul class="info-list">
+            <li>
+                <div class="info-icon"><i class="fas fa-map-marker-alt"></i></div>
+                <div class="info-content">
+                    <h4>Location</h4>
+                    <p>123 Health Street, Medical District<br>Ahmedabad, India 380001</p>
+                </div>
+            </li>
+            <li>
+                <div class="info-icon"><i class="fas fa-phone-alt"></i></div>
+                <div class="info-content">
+                    <h4>Phone</h4>
+                    <p>+91 98765 43210<br>(Mon-Sat, 9AM-6PM)</p>
+                </div>
+            </li>
+            <li>
+                <div class="info-icon"><i class="fas fa-envelope-open-text"></i></div>
+                <div class="info-content">
+                    <h4>Email</h4>
+                    <p>support@oncodetect.com<br>help@medicalproject.org</p>
+                </div>
+            </li>
+        </ul>
     </div>
 
 </div>
 
+<!-- TOP DOCTORS RECOMMENDATION -->
+<div class="doctors-section">
+    <div class="section-header">
+        <h2><i class="fas fa-user-md" style="color: var(--primary);"></i> Top Recommended Specialists</h2>
+        <p>Connect with trusted experts for professional medical consultation.</p>
+    </div>
+
+    <div class="doctors-grid">
+        <!-- Doctor 1 -->
+        <div class="doctor-card">
+            <div class="doc-header">
+                <div class="doc-img">AS</div> <!-- Initials for Placeholder -->
+            </div>
+            <div class="doc-body">
+                <h3 class="doc-name">Dr. Anita Sharma</h3>
+                <div class="doc-spec">Breast Surgical Oncologist</div>
+                <div class="rating">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                    <span style="color: #666; font-size: 0.8rem; margin-left: 5px;">4.9 (120 Reviews)</span>
+                </div>
+                <div class="doc-contact-info">
+                    <div><i class="fas fa-hospital"></i> Apollo Hospital, Ahmedabad</div>
+                    <div><i class="fas fa-phone"></i> +91 98765 1122</div>
+                    <div><i class="fas fa-clock"></i> Mon-Sat, 10:00 AM - 2:00 PM</div>
+                </div>
+                <button class="btn-book">Contat Now</button>
+            </div>
+        </div>
+
+        <!-- Doctor 2 -->
+        <div class="doctor-card">
+            <div class="doc-header">
+                <div class="doc-img">RV</div>
+            </div>
+            <div class="doc-body">
+                <h3 class="doc-name">Dr. Rajesh Verma</h3>
+                <div class="doc-spec">Medical Oncologist</div>
+                <div class="rating">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    <span style="color: #666; font-size: 0.8rem; margin-left: 5px;">5.0 (85 Reviews)</span>
+                </div>
+                <div class="doc-contact-info">
+                    <div><i class="fas fa-hospital"></i> Fortis Hospital, Delhi</div>
+                    <div><i class="fas fa-phone"></i> +91 98765 3344</div>
+                    <div><i class="fas fa-clock"></i> Mon-Fri, 9:00 AM - 1:00 PM</div>
+                </div>
+                <button class="btn-book">Contat Now</button>
+            </div>
+        </div>
+
+        <!-- Doctor 3 -->
+        <div class="doctor-card">
+            <div class="doc-header">
+                <div class="doc-img">SP</div>
+            </div>
+            <div class="doc-body">
+                <h3 class="doc-name">Dr. Sunita Patel</h3>
+                <div class="doc-spec">Radiation Oncologist</div>
+                <div class="rating">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                    <span style="color: #666; font-size: 0.8rem; margin-left: 5px;">4.5 (60 Reviews)</span>
+                </div>
+                <div class="doc-contact-info">
+                    <div><i class="fas fa-hospital"></i> HCG Cancer Centre</div>
+                    <div><i class="fas fa-phone"></i> +91 98765 5566</div>
+                    <div><i class="fas fa-clock"></i> Mon-Sat, 4:00 PM - 8:00 PM</div>
+                </div>
+                <button class="btn-book">Contat Now</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- FOOTER -->
 <footer>
-    <p>© 2026 Breast Cancer Predictor | Built with ❤️</p>
+    <p>© 2026 OncoDetect. All rights reserved.</p>
+    <div style="margin-top: 10px;">
+        <a href="#" style="color: var(--primary); margin: 0 10px;"><i class="fab fa-facebook"></i></a>
+        <a href="#" style="color: var(--primary); margin: 0 10px;"><i class="fab fa-twitter"></i></a>
+        <a href="#" style="color: var(--primary); margin: 0 10px;"><i class="fab fa-instagram"></i></a>
+    </div>
 </footer>
 
 </body>

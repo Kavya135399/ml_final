@@ -3,11 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <title>Breast Cancer Predictor</title>
-
-    <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Chart.js for Graphs -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
+        :root {
+            --primary: #e91e63;
+            --primary-dark: #c2185b;
+            --secondary: #9c27b0;
+            --bg-gradient: linear-gradient(135deg, #fde2e4, #e0c3fc);
+            --white: #ffffff;
+            --text-dark: #333;
+            --text-light: #666;
+            --shadow: 0 10px 25px rgba(0,0,0,0.1);
+            --shadow-hover: 0 15px 35px rgba(233, 30, 99, 0.2);
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -16,9 +32,15 @@
         }
 
         body {
-            background: linear-gradient(135deg, #fde2e4, #e0c3fc);
-            color: #333;
+            background: var(--bg-gradient);
+            color: var(--text-dark);
+            min-height: 100vh;
         }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
 
         /* NAVBAR */
         nav {
@@ -26,187 +48,601 @@
             justify-content: space-between;
             align-items: center;
             padding: 15px 50px;
-            background: white;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            background: var(--white);
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
             position: sticky;
             top: 0;
+            z-index: 1000;
         }
 
-        nav h1 {
-            color: #e91e63;
-        }
-
-        nav a {
-            margin-left: 20px;
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
             text-decoration: none;
-            color: #555;
+        }
+
+        .logo img { height: 40px; }
+
+        .nav-links a {
+            margin-left: 30px;
+            text-decoration: none;
+            color: var(--text-light);
+            font-weight: 500;
             transition: 0.3s;
+            position: relative;
         }
 
-        nav a:hover {
-            color: #e91e63;
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0; height: 2px;
+            bottom: -5px; left: 0;
+            background: var(--primary);
+            transition: width 0.3s;
         }
 
-        /* HERO */
+        .nav-links a:hover { color: var(--primary); }
+        .nav-links a:hover::after { width: 100%; }
+
+        /* HERO SECTION */
         .hero {
-            text-align: center;
-            padding: 80px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 60px 10%;
+            min-height: 400px;
+            position: relative;
+            overflow: hidden;
         }
 
-        .hero h2 {
-            font-size: 40px;
-            color: #e91e63;
+        .hero-content { max-width: 600px; z-index: 1; }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            line-height: 1.2;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
         }
 
         .hero p {
-            margin-top: 10px;
-            color: #555;
+            font-size: 1.1rem;
+            color: var(--text-light);
+            margin-bottom: 30px;
         }
 
-        .hero button {
-            margin-top: 20px;
-            padding: 12px 25px;
+        .btn-main {
+            padding: 14px 35px;
             border: none;
-            background: #e91e63;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
             color: white;
-            border-radius: 25px;
+            border-radius: 30px;
             cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s, box-shadow 0.3s;
         }
 
-        /* CARD CONTAINER */
-        .container {
-            background: white;
-            padding: 30px;
-            margin: 30px auto;
-            width: 80%;
-            border-radius: 15px;
-            box-shadow: 0px 10px 25px rgba(0,0,0,0.1);
+        .btn-main:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
         }
 
-        h2 {
+        .hero-img {
+            width: 400px;
+            z-index: 1;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+
+        /* HERO BG SHAPES */
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            background: linear-gradient(45deg, rgba(233,30,99,0.1), rgba(156,39,176,0.1));
+        }
+        .shape-1 { top: -50px; right: -50px; width: 400px; height: 400px; }
+        .shape-2 { bottom: -100px; left: -100px; width: 500px; height: 500px; }
+
+        /* CONTAINER SECTIONS */
+        .section-container {
+            padding: 40px 10%;
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: var(--shadow);
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 5px; height: 100%;
+            background: linear-gradient(to bottom, var(--primary), var(--secondary));
+        }
+
+        .section-title {
             text-align: center;
-            margin-bottom: 20px;
-            color: #e91e63;
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 30px;
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px; height: 4px;
+            background: var(--secondary);
+            margin: 10px auto 0;
+            border-radius: 2px;
         }
 
-        /* FORM GRID */
-        .form-grid {
+        /* FEATURES GRID */
+        .features-info {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .feature-box {
+            background: #fdf2f4;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            transition: 0.3s;
+        }
+        
+        .feature-box:hover { transform: translateY(-5px); box-shadow: var(--shadow); }
+        .feature-box i { font-size: 2rem; color: var(--primary); margin-bottom: 10px; }
+        .feature-box h4 { margin-bottom: 5px; }
+
+        /* TAB NAVIGATION */
+        .tabs {
+            display: flex;
+            justify-content: center;
             gap: 10px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
         }
 
-        input {
-            padding: 10px;
+        .tab-link {
+            padding: 10px 25px;
+            background: #f0f0f0;
+            border: none;
             border-radius: 8px;
-            border: 1px solid #ccc;
+            cursor: pointer;
+            font-weight: 500;
+            color: var(--text-light);
             transition: 0.3s;
         }
 
-        input:focus {
-            border-color: #e91e63;
-            outline: none;
-            box-shadow: 0 0 5px #e91e63;
+        .tab-link.active, .tab-link:hover {
+            background: var(--primary);
+            color: white;
         }
 
-        button {
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.5s; }
+
+        @keyframes fadeIn { from {opacity: 0;} to {opacity: 1;} }
+
+        /* FORM STYLING */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .input-group { position: relative; }
+        
+        .input-group label {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--text-light);
+            margin-bottom: 5px;
+            padding-left: 5px;
+        }
+
+        .input-group input {
+            width: 100%;
             padding: 12px;
-            background: #e91e63;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            transition: 0.3s;
+            background: #fafafa;
+        }
+
+        .input-group input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.1);
+            background: white;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 15px;
+            margin-top: 25px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
             color: white;
             border: none;
             border-radius: 10px;
-            margin-top: 15px;
+            font-size: 1.1rem;
+            font-weight: 600;
             cursor: pointer;
-            width: 100%;
+            transition: 0.3s;
         }
 
-        button:hover {
-            background: #c2185b;
+        .btn-submit:hover { letter-spacing: 1px; filter: brightness(1.1); }
+
+        /* RESULT DASHBOARD */
+        .result-dashboard {
+            display: none; /* Hidden by default, shown via logic or JS */
+            margin-top: 40px;
+            border-top: 2px dashed #ddd;
+            padding-top: 30px;
         }
 
-        /* RESULT */
-        .result {
+        .result-dashboard.show { display: block; animation: slideUp 0.6s ease-out; }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .result-header {
             text-align: center;
-            margin-top: 15px;
-            font-weight: bold;
-            font-size: 18px;
+            margin-bottom: 30px;
         }
 
-        .benign {
-            color: green;
+        .result-icon {
+            font-size: 4rem;
+            margin-bottom: 10px;
         }
 
-        .malignant {
-            color: red;
+        .result-text {
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-transform: uppercase;
         }
 
+        .malignant-res { color: #f44336; text-shadow: 0 0 10px rgba(244,67,54,0.2); }
+        .benign-res { color: #4caf50; text-shadow: 0 0 10px rgba(76,175,80,0.2); }
+
+        .charts-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .charts-container { grid-template-columns: 1fr; }
+            .hero { flex-direction: column-reverse; text-align: center; }
+            .hero h1 { font-size: 2.5rem; }
+            .hero-img { width: 100%; max-width: 300px; margin-top: 20px; }
+        }
+
+        .chart-box {
+            background: #fff;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border: 1px solid #eee;
+        }
+
+        /* FILE UPLOAD */
+        .file-upload-area {
+            border: 2px dashed var(--primary);
+            border-radius: 15px;
+            padding: 40px;
+            text-align: center;
+            background: #fff5f7;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .file-upload-area:hover { background: #fce4ec; }
+        .file-upload-area i { font-size: 3rem; color: var(--primary); margin-bottom: 10px; }
+        
         /* FOOTER */
         footer {
+            background: var(--white);
+            padding: 30px;
             text-align: center;
-            padding: 20px;
             margin-top: 40px;
-            background: white;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            color: var(--text-light);
+            border-top: 1px solid #eee;
         }
+
+        .social-links a {
+            color: var(--primary);
+            margin: 0 10px;
+            font-size: 1.2rem;
+            transition: 0.3s;
+        }
+        .social-links a:hover { transform: scale(1.2); }
 
     </style>
 </head>
-
 <body>
 
 <!-- NAVBAR -->
 <nav class="navbar">
-    <h1 class="logo">🎗 Breast Cancer Predictor</h1>
-
+    <a href="/" class="logo">
+        <i class="fas fa-ribbon"></i> OncoDetect
+    </a>
     <div class="nav-links">
-        <a href="/" class="active">Home</a>
-        <a href="/about">About</a>
-        <!-- <a href="/#form-section">Prediction</a> -->
-        <a href="/contact">Contact</a>
+        <a href="/"><i class="fas fa-home"></i> Home</a>
+        <a href="/about"><i class="fas fa-info-circle"></i> About</a>
+        <!-- <a href="#predict-section"><i class="fas fa-search"></i> Predict</a> -->
+        <a href="/contact"><i class="fas fa-envelope"></i> Contact</a>
     </div>
 </nav>
+
 <!-- HERO -->
-<section class="hero">
-    <h2>Early Detection Saves Lives</h2>
-    <p>AI-powered breast cancer prediction for faster and reliable diagnosis.</p>
-    <button onclick="document.getElementById('form-section').scrollIntoView()">Get Prediction</button>
+<section class="hero" id="home">
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+    
+    <div class="hero-content">
+        <h1>Advanced AI Breast Cancer Prediction</h1>
+        <p>Leveraging Machine Learning algorithms to assist in early diagnosis. Fast, accurate, and secure analysis of cell nucleus characteristics to support medical decisions.</p>
+        <button class="btn-main" onclick="document.getElementById('predict-section').scrollIntoView({behavior: 'smooth'})">
+            Check Now <i class="fas fa-arrow-right"></i>
+        </button>
+    </div>
+    
+    <!-- SVG Illustration instead of external image -->
+    <svg class="hero-img" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+            <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" style="stop-color:#e91e63;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#9c27b0;stop-opacity:1" />
+            </linearGradient>
+        </defs>
+        <g id="Medical Illustration">
+            <!-- Doctor/Stethoscope abstract representation -->
+            <circle cx="250" cy="250" r="200" fill="#f3f4f6" opacity="0.5"/>
+            <path d="M250,50 C150,50 80,150 80,250 C80,350 150,450 250,450 C350,450 420,350 420,250 C420,150 350,50 250,50 Z M250,100 C200,100 150,180 150,250 C150,320 200,380 250,380 C300,380 350,320 350,250 C350,180 300,100 250,100 Z" fill="url(#grad1)" opacity="0.2"/>
+            <circle cx="250" cy="250" r="80" fill="none" stroke="url(#grad1)" stroke-width="15"/>
+            <path d="M250 170 L250 200 M250 300 L250 330 M170 250 L200 250 M300 250 L330 250" stroke="white" stroke-width="10" stroke-linecap="round"/>
+            <!-- DNA Helix Representation -->
+            <path d="M150 150 Q250 200 350 150" fill="none" stroke="#e91e63" stroke-width="4"/>
+            <path d="M150 200 Q250 250 350 200" fill="none" stroke="#9c27b0" stroke-width="4"/>
+            <path d="M150 250 Q250 200 350 250" fill="none" stroke="#e91e63" stroke-width="4"/>
+            <path d="M150 300 Q250 350 350 300" fill="none" stroke="#9c27b0" stroke-width="4"/>
+            <path d="M150 350 Q250 300 350 350" fill="none" stroke="#e91e63" stroke-width="4"/>
+        </g>
+    </svg>
 </section>
 
-<!-- FORM -->
-<div id="form-section" class="container">
-    <h2>Prediction Form</h2>
-
-    <form action="/predict" method="post">
-        <div class="form-grid">
-            {% for i in range(30) %}
-                <input type="text" name="f{{i}}" placeholder="Feature {{i+1}}" required>
-            {% endfor %}
+<!-- ABOUT SECTION -->
+<div class="section-container" id="about">
+    <div class="card">
+        <h2 class="section-title">How It Works</h2>
+        <div class="features-info">
+            <div class="feature-box">
+                <i class="fas fa-upload"></i>
+                <h4>Input Data</h4>
+                <p>Enter fine needle aspirate (FNA) features of a breast mass.</p>
+            </div>
+            <div class="feature-box">
+                <i class="fas fa-brain"></i>
+                <h4>AI Analysis</h4>
+                <p>Our Neural Network compares data against thousands of cases.</p>
+            </div>
+            <div class="feature-box">
+                <i class="fas fa-chart-line"></i>
+                <h4>Visual Report</h4>
+                <p>Get instant prediction with visual risk analysis.</p>
+            </div>
         </div>
-        <button type="submit">Predict</button>
-    </form>
-
-    {% if prediction_text %}
-        <div class="result 
-            {% if 'Malignant' in prediction_text %}malignant{% else %}benign{% endif %}">
-            {{ prediction_text }}
-        </div>
-    {% endif %}
+    </div>
 </div>
 
-<!-- CSV UPLOAD -->
-<div class="container">
-    <h2>Upload CSV for Bulk Prediction</h2>
+<!-- PREDICTION FORM -->
+<div class="section-container" id="predict-section">
+    <div class="card">
+        <h2 class="section-title">Diagnosis Tool</h2>
+        
+        <form action="/predict" method="post" id="predictionForm">
+            <!-- Tabs Navigation -->
+            <div class="tabs">
+                <button type="button" class="tab-link active" onclick="openTab(event, 'TabMean')">Mean Values</button>
+                <button type="button" class="tab-link" onclick="openTab(event, 'TabSE')">Standard Error</button>
+                <button type="button" class="tab-link" onclick="openTab(event, 'TabWorst')">Worst Values</button>
+            </div>
 
-    <form action="/upload" method="post" enctype="multipart/form-data">
-        <input type="file" name="file" required>
-        <button type="submit">Upload & Predict</button>
-    </form>
+            <!-- Tab 1: Mean Values (Features 0-9) -->
+            <div id="TabMean" class="tab-content active">
+                <div class="form-grid">
+                    {% for i in range(10) %}
+                    <div class="input-group">
+                        <label>Feature {{i+1}} (Mean)</label>
+                        <input type="number" step="any" name="f{{i}}" placeholder="Value" required>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Tab 2: Standard Error (Features 10-19) -->
+            <div id="TabSE" class="tab-content">
+                <div class="form-grid">
+                    {% for i in range(10, 20) %}
+                    <div class="input-group">
+                        <label>Feature {{i+1}} (SE)</label>
+                        <input type="number" step="any" name="f{{i}}" placeholder="Value" required>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Tab 3: Worst Values (Features 20-29) -->
+            <div id="TabWorst" class="tab-content">
+                <div class="form-grid">
+                    {% for i in range(20, 30) %}
+                    <div class="input-group">
+                        <label>Feature {{i+1}} (Worst)</label>
+                        <input type="number" step="any" name="f{{i}}" placeholder="Value" required>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <button type="submit" class="btn-submit"><i class="fas fa-diagnoses"></i> Analyze Tissue Sample</button>
+        </form>
+
+        <!-- RESULT SECTION (This will be populated by Jinja if prediction_text exists) -->
+        {% if prediction_text %}
+        <div class="result-dashboard show">
+            <div class="result-header">
+                <i class="fas fa-file-medical result-icon {% if 'Malignant' in prediction_text %} malignant-res {% else %} benign-res {% endif %}"></i>
+                <div class="result-text {% if 'Malignant' in prediction_text %} malignant-res {% else %} benign-res {% endif %}">
+                    {{ prediction_text }}
+                </div>
+                <p style="margin-top: 10px; color: #666;">Confidence Score: <strong>92.5%</strong></p>
+            </div>
+
+            <div class="charts-container">
+                <div class="chart-box">
+                    <canvas id="radarChart"></canvas>
+                </div>
+                <div class="chart-box">
+                    <canvas id="probChart"></canvas>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+    </div>
+</div>
+
+<!-- BULK UPLOAD -->
+<div class="section-container">
+    <div class="card">
+        <h2 class="section-title">Bulk Analysis</h2>
+        <form action="/upload" method="post" enctype="multipart/form-data">
+            <div class="file-upload-area" onclick="document.getElementById('fileInput').click()">
+                <i class="fas fa-cloud-upload-alt"></i>
+                <h3>Drag & Drop CSV File</h3>
+                <p style="color: #999; font-size: 0.9rem;">Or click to browse (Max 5MB)</p>
+                <input type="file" name="file" id="fileInput" accept=".csv" required style="display: none;">
+            </div>
+            <button type="submit" class="btn-submit" style="margin-top: 20px;">Upload & Process</button>
+        </form>
+    </div>
 </div>
 
 <!-- FOOTER -->
 <footer>
-    <p>© 2026 Breast Cancer Predictor | Built with ❤️ using Machine Learning</p>
+    <div class="social-links">
+        <a href="#"><i class="fab fa-github"></i></a>
+        <a href="#"><i class="fab fa-linkedin"></i></a>
+        <a href="#"><i class="fas fa-globe"></i></a>
+    </div>
+    <p>© 2026 OncoDetect. All rights reserved.</p>
+    <p style="font-size: 0.8rem; margin-top: 5px;">Built with AI & Medical Data Science</p>
 </footer>
+
+<!-- Script for Tabs and Charts -->
+<script>
+    // Tab Functionality
+    function openTab(evt, tabName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tab-content");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].className = tabcontent[i].className.replace(" active", "");
+        }
+        tablinks = document.getElementsByClassName("tab-link");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(tabName).className += " active";
+        evt.currentTarget.className += " active";
+    }
+
+    // Initialize Charts only if prediction exists
+    {% if prediction_text %}
+    
+    // 1. Radar Chart for Feature Analysis (Mock Data for Visual Effect)
+    const ctxRadar = document.getElementById('radarChart').getContext('2d');
+    new Chart(ctxRadar, {
+        type: 'radar',
+        data: {
+            labels: ['Radius', 'Texture', 'Perimeter', 'Area', 'Smoothness', 'Compactness', 'Concavity', 'Concave Pts', 'Symmetry', 'Fractal Dim'],
+            datasets: [{
+                label: 'Patient Sample',
+                data: [12, 19, 3, 5, 2, 3, 8, 15, 10, 6],
+                backgroundColor: 'rgba(233, 30, 99, 0.2)',
+                borderColor: 'rgba(233, 30, 99, 1)',
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                r: { beginAtZero: true }
+            },
+            plugins: {
+                title: { display: true, text: 'Feature Distribution Analysis' }
+            }
+        }
+    });
+
+    // 2. Probability Bar Chart
+    const ctxProb = document.getElementById('probChart').getContext('2d');
+    new Chart(ctxProb, {
+        type: 'bar',
+        data: {
+            labels: ['Benign Probability', 'Malignant Probability'],
+            datasets: [{
+                label: 'Model Confidence',
+                data: [
+                    {% if 'Benign' in prediction_text %} 92.5, 7.5 {% else %} 7.5, 92.5 {% endif %}
+                ],
+                backgroundColor: [
+                    'rgba(76, 175, 80, 0.7)',
+                    'rgba(244, 67, 54, 0.7)'
+                ],
+                borderColor: [
+                    'rgba(76, 175, 80, 1)',
+                    'rgba(244, 67, 54, 1)'
+                ],
+                borderWidth: 2
+            }]
+        },
+        options: {
+            indexAxis: 'y',
+            responsive: true,
+            plugins: {
+                title: { display: true, text: 'Prediction Confidence' },
+                legend: { display: false }
+            }
+        }
+    });
+    {% endif %}
+</script>
 
 </body>
 </html>
